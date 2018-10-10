@@ -1,20 +1,20 @@
 ------- GET -------
 
-CHECK USERNAME AVAILABILITY - http://localhost:8001/get/username/availability?username=jj1
+CHECK USERNAME AVAILABILITY - http://129.206.7.141:8080/get/username/availability?username=jj1
 Response - True: Available, False: Not Available
 
-CHECK AUTHORISATION KEY AVAILABILITY - http://localhost:8001/get/authkey/availability?userid=12312&authkey=9624648
+CHECK AUTHORISATION KEY AVAILABILITY - http://129.206.7.141:8080/get/authkey/availability?userid=12312&authkey=9624648
 Response - True: Available, False: Not Available
 
-CHECK EMAIL ID AVAILABILITY - http://localhost:8001/get/emailid/availability?emailid=xyz@gmail.com
+CHECK EMAIL ID AVAILABILITY - http://129.206.7.141:8080/get/emailid/availability?emailid=xyz@gmail.com
 Response - True: Available, False: Not Available
 
-CHECK LOGIN - http://localhost:8001/get/login/check?username=jj&pass=vvv
+CHECK LOGIN - http://129.206.7.141:8080/get/login/check?username=jj&pass=vvv
 Response - True: Correct, False: Incorrect
 
-PASSWORD RECOVER (Not Functional) - http://localhost:8001/get/pass/recover?emailid=xyz@gmail.com
+PASSWORD RECOVER (Not Functional) - http://129.206.7.141:8080/get/pass/recover?emailid=xyz@gmail.com
 
-GET ALL PROJECT AND ROLES - http://localhost:8001/get/proj/role?userid=123
+GET ALL PROJECT AND ROLES - http://129.206.7.141:8080/get/proj/role?userid=123
 Response - [
                 {
                     "role_proj": "editor",
@@ -30,22 +30,22 @@ Response - [
 
 CREATE NEW PROJECT -
 
-URl - http://localhost:8001/post/proj
+URl - http://129.206.7.141:8080/post/proj
 Payload1 - {"proj_name":"proj 2","organisation": "org 2","funder":"daad","description":"desp 1"}
 Payload1 - {"proj_name":"proj 2","organisation": "org 2","funder":"daad"}
 
 CREATE NEW USER - 
 
-URL - http://localhost:8001/post/user
+URL - http://129.206.7.141:8080/post/user
 Payload1 - {"first_name":"mo","last_name": "zia1","email":"mo@gm.com","username":"zz","pass":"bb","organisation":"uni heidelberg","about":"nice guy"}
 Payload2 - {"first_name":"mo","last_name": "zia1","email":"mo@gm.com","username":"zz","pass":"bb","organisation":"uni heidelberg"}
 
 CREATE NEW ROLE -
 
-URl - http://localhost:8001/post/role
+URl - http://129.206.7.141:8080/post/role
 Payload1 - {"user_id":"12223","role_proj": "superuser","proj_id":"7779"}
 
 CREATE NEW AUTHORISATION KEY -
 
-URL - http://localhost:8001/post/authkey
+URL - http://129.206.7.141:8080/post/authkey
 Payload1 - {"user_id":"12227"}
