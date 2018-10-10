@@ -31,3 +31,6 @@ Heimap Project Management Backend
 
 ```CREATE TABLE role_tbl (p_key SERIAL PRIMARY KEY, user_id INTEGER, role_proj TEXT, proj_id INTEGER);```
 
+# Auto Start Server on server reboot 
+
+https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04 - Read the PM2 Section
