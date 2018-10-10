@@ -11,6 +11,8 @@ Heimap Project Management Backend
 
 ```npm install pg-promise```
 
+```sudo npm install -g pm2```
+
 # Start server
 
 ```node server```
