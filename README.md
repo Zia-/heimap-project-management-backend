@@ -19,9 +19,23 @@ Heimap Project Management Backend
 
 # Prepare database 
 
+# Install postgresql
+
+```sudo apt update```
+
+```sudo apt install postgresql postgresql-contrib```
+
+# Switch to postgres user, change password and run SQLs
+
+```sudo -i -u postgres```
+
+```psql```
+
+```ALTER USER postgres WITH PASSWORD 'postgres';```
+
 # Create table 
 
-```CREATE DATABASE heimap_proj_man WITH OWNER postgres;```
+```CREATE DATABASE heimap_proj_man WITH OWNER heimapadmin;```
 
 # Ceate tables
 
@@ -36,3 +50,9 @@ Heimap Project Management Backend
 # Auto Start Server on server reboot 
 
 https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04 - Read the PM2 Section
+
+# PSQL common commands ***
+
+```\l``` list databases
+
+```\dt``` list tables

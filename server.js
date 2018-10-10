@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
 const pgp = require("pg-promise")(/*options*/) // /*options*/ is required
-var db = pgp('postgres://postgres:zia123@127.0.0.1:5432/heimap_proj_man') // Change per connection
+var db = pgp('postgres://heimapadmin:heimap@127.0.0.1:5432/heimap_proj_man') // Change per connection
 
 
 var corsOptions = {
@@ -12,7 +12,7 @@ var corsOptions = {
 }
 app.use(cors(corsOptions))
 
-app.listen(8001, () => {
+app.listen(8080, () => {
     console.log('Server started!');
 });
 
