@@ -31,7 +31,7 @@ Heimap Project Management Backend
 
 ```psql```
 
-```ALTER USER postgres WITH PASSWORD 'postgres';```
+```ALTER USER heimapadmin WITH PASSWORD 'heimap';```
 
 # Create table 
 

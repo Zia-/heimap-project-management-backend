@@ -40,10 +40,10 @@ app.route('/get/username/availability').get((req, res) => {
 });
 
 app.route('/get/authkey/availability').get((req, res) => {
-    const userid = req.query.userid;
+    const username = req.query.username;
     const auth_key = req.query.authkey;
 
-    db.any('SELECT COUNT(*) FROM auth_key_tbl WHERE user_id = $1 AND auth_key = $2 AND validity = true;', [userid, auth_key])
+    db.any('WITH user_id_select AS (SELECT p_key AS user_id FROM user_tbl WHERE username = $1) SELECT COUNT(*) FROM auth_key_tbl a, user_id_select u WHERE a.user_id = u.user_id AND a.auth_key = $2 AND a.validity = true;', [username, auth_key])
     .then(function (data) {
         res.status(200).send((data[0]['count']>0) ? true : false);
     })
@@ -90,9 +90,9 @@ app.route('/get/pass/recover').get((req, res) => {
 });
 
 app.route('/get/proj/role').get((req, res) => {
-    const userid = req.query.userid;
+    const username = req.query.username;
 
-    db.any('SELECT r.role_proj, p.proj_name FROM role_tbl r JOIN proj_tbl p ON r.proj_id = p.p_key WHERE r.user_id = $1;', [userid])
+    db.any('WITH user_id_select AS (SELECT p_key AS user_id FROM user_tbl WHERE username = $1), all_projs AS (SELECT r.proj_id FROM role_tbl r, user_id_select u WHERE r.user_id = u.user_id), all_users AS (SELECT r.user_id, r.role_proj, r.proj_id FROM role_tbl r, all_projs a WHERE r.proj_id = a.proj_id) SELECT a.proj_id, p.proj_name, u.first_name, u.last_name, u.username, a.role_proj FROM all_users a JOIN user_tbl u ON a.user_id = u.p_key JOIN proj_tbl p ON a.proj_id = p.p_key;', [username])
     .then(function (data) {
         res.status(200).send(data);
     })
@@ -106,13 +106,15 @@ app.route('/get/proj/role').get((req, res) => {
 app.use(bodyParser.json());
 
 app.route('/post/proj').post((req, res) => {
-    db.none('INSERT INTO proj_tbl (proj_name, organisation, funder, description, timestmp) VALUES ($1, $2, $3, $4, now());', [req.body.proj_name, req.body.organisation, req.body.funder, req.body.description])
+    // INSERT INTO proj_tbl, then INSERT INTO role_tbl, then UPDATE auth_key_tbl
+    db.none('INSERT INTO proj_tbl (proj_name, organisation, funder, description, timestmp) VALUES ($1, $2, $3, $4, now()); WITH user_id_select AS (SELECT p_key AS user_id FROM user_tbl WHERE username = $5), proj_id_latest AS (SELECT MAX(p_key) AS proj_id FROM proj_tbl) INSERT INTO role_tbl (user_id, role_proj, proj_id) SELECT p.proj_id, \'superuser\', u.user_id FROM user_id_select u, proj_id_latest p; WITH user_id_select AS (SELECT p_key AS user_id FROM user_tbl WHERE username = $5) UPDATE auth_key_tbl SET validity = false WHERE user_id = (SELECT user_id FROM user_id_select) AND auth_key = $6;', [req.body.proj_name, req.body.organisation, req.body.funder, req.body.description, req.body.username, req.body.authkey])
     .then(function (data) {
         res.status(201).send("PROJECT CREATION SUCCEEDED")
     })
     .catch(function (error) {
         res.status(400).send("PROJECT CREATION FAILED")
     })
+
 });
 
 app.route('/post/user').post((req, res) => {
@@ -126,7 +128,7 @@ app.route('/post/user').post((req, res) => {
 });
 
 app.route('/post/role').post((req, res) => {
-    db.none('INSERT INTO role_tbl (user_id, role_proj, proj_id) VALUES ($1, $2, $3);', [req.body.user_id, req.body.role_proj, req.body.proj_id])
+    db.none('WITH user_id_select AS (SELECT p_key AS user_id FROM user_tbl WHERE username = $1) INSERT INTO role_tbl (user_id, role_proj, proj_id) SELECT user_id, $2, $3 FROM user_id_select;', [req.body.username, req.body.role_proj, req.body.proj_id])
     .then(function (data) {
         res.status(201).send("ROLE CREATION SUCCEEDED")
     })
@@ -136,7 +138,7 @@ app.route('/post/role').post((req, res) => {
 });
 
 app.route('/post/authkey').post((req, res) => {
-    db.none('INSERT INTO auth_key_tbl (user_id, timestmp, auth_key, validity) VALUES ($1, now(), floor(random() * (1000000-9999999+1) + 9999999)::int, TRUE);', [req.body.user_id])
+    db.none('WITH user_id_select AS (SELECT p_key AS user_id FROM user_tbl WHERE username = $1) INSERT INTO auth_key_tbl (user_id, timestmp, auth_key, validity) select user_id, now(), floor(random() * (1000000-9999999+1) + 9999999)::int, TRUE FROM user_id_select;', [req.body.username])
     .then(function (data) {
         res.status(201).send("AUTHORISATION KEY CREATION SUCCEEDED")
     })
