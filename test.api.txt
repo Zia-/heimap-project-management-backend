@@ -3,7 +3,7 @@
 CHECK USERNAME AVAILABILITY - http://129.206.7.141:8080/get/username/availability?username=jj1
 Response - True: Available, False: Not Available
 
-CHECK AUTHORISATION KEY AVAILABILITY - http://129.206.7.141:8080/get/authkey/availability?userid=12312&authkey=9624648
+CHECK AUTHORISATION KEY AVAILABILITY - http://129.206.7.141:8080/get/authkey/availability?username=jj&authkey=9624648
 Response - True: Available, False: Not Available
 
 CHECK EMAIL ID AVAILABILITY - http://129.206.7.141:8080/get/emailid/availability?emailid=xyz@gmail.com
@@ -14,15 +14,63 @@ Response - True: Correct, False: Incorrect
 
 PASSWORD RECOVER (Not Functional) - http://129.206.7.141:8080/get/pass/recover?emailid=xyz@gmail.com
 
-GET ALL PROJECT AND ROLES - http://129.206.7.141:8080/get/proj/role?userid=123
+GET ALL PROJECT AND ROLES - http://129.206.7.141:8080/get/proj/role?username=zz
 Response - [
                 {
-                    "role_proj": "editor",
-                    "proj_name": "proj"
+                    "proj_id": 9,
+                    "proj_name": "proj 2",
+                    "first_name": "lucas",
+                    "last_name": "loom",
+                    "username": "loomla",
+                    "role_proj": "manager"
                 },
                 {
-                    "role_proj": "superuser",
-                    "proj_name": "proj 2"
+                    "proj_id": 9,
+                    "proj_name": "proj 2",
+                    "first_name": "dirk",
+                    "last_name": "eller",
+                    "username": "dr",
+                    "role_proj": "editor"
+                },
+                {
+                    "proj_id": 9,
+                    "proj_name": "proj 2",
+                    "first_name": "chris",
+                    "last_name": "kempf",
+                    "username": "chr",
+                    "role_proj": "superuser"
+                },
+                {
+                    "proj_id": 9,
+                    "proj_name": "proj 2",
+                    "first_name": "mo",
+                    "last_name": "zia",
+                    "username": "zz",
+                    "role_proj": "superuser"
+                },
+                {
+                    "proj_id": 10,
+                    "proj_name": "proj riz",
+                    "first_name": "rizwan",
+                    "last_name": "mohammed",
+                    "username": "riz",
+                    "role_proj": "user"
+                },
+                {
+                    "proj_id": 10,
+                    "proj_name": "proj riz",
+                    "first_name": "mo",
+                    "last_name": "zia",
+                    "username": "zz",
+                    "role_proj": "editor"
+                },
+                {
+                    "proj_id": 10,
+                    "proj_name": "proj riz",
+                    "first_name": "john",
+                    "last_name": "clark",
+                    "username": "jj",
+                    "role_proj": "editor"
                 }
             ]
 
@@ -31,8 +79,8 @@ Response - [
 CREATE NEW PROJECT -
 
 URl - http://129.206.7.141:8080/post/proj
-Payload1 - {"proj_name":"proj 2","organisation": "org 2","funder":"daad","description":"desp 1"}
-Payload1 - {"proj_name":"proj 2","organisation": "org 2","funder":"daad"}
+Payload1 - {"username":"jj","authkey":"123454","proj_name":"proj 2","organisation":"org 2","funder":"daad","description":"desp 1"}
+Payload1 - {"username":"jj","authkey":"123454","proj_name":"proj 2","organisation": "org 2","funder":"daad"}
 
 CREATE NEW USER - 
 
@@ -43,9 +91,9 @@ Payload2 - {"first_name":"mo","last_name": "zia1","email":"mo@gm.com","username"
 CREATE NEW ROLE -
 
 URl - http://129.206.7.141:8080/post/role
-Payload1 - {"user_id":"12223","role_proj": "superuser","proj_id":"7779"}
+Payload1 - {"username":"12223","role_proj": "superuser","proj_id":"7779"}
 
 CREATE NEW AUTHORISATION KEY -
 
 URL - http://129.206.7.141:8080/post/authkey
-Payload1 - {"user_id":"12227"}
+Payload1 - {"username":"jj"}
