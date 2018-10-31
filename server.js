@@ -107,9 +107,9 @@ app.use(bodyParser.json());
 
 app.route('/post/proj').post((req, res) => {
     // INSERT INTO proj_tbl, then INSERT INTO role_tbl, then UPDATE auth_key_tbl
-    db.none('INSERT INTO proj_tbl (proj_name, organisation, funder, description, timestmp) VALUES ($1, $2, $3, $4, now()); WITH user_id_select AS (SELECT p_key AS user_id FROM user_tbl WHERE username = $5), proj_id_latest AS (SELECT MAX(p_key) AS proj_id FROM proj_tbl) INSERT INTO role_tbl (user_id, role_proj, proj_id) SELECT p.proj_id, \'superuser\', u.user_id FROM user_id_select u, proj_id_latest p; WITH user_id_select AS (SELECT p_key AS user_id FROM user_tbl WHERE username = $5) UPDATE auth_key_tbl SET validity = false WHERE user_id = (SELECT user_id FROM user_id_select) AND auth_key = $6;', [req.body.proj_name, req.body.organisation, req.body.funder, req.body.description, req.body.username, req.body.authkey])
+    db.any('INSERT INTO proj_tbl (proj_name, organisation, funder, description, timestmp) VALUES ($1, $2, $3, $4, now()); WITH user_id_select AS (SELECT p_key AS user_id FROM user_tbl WHERE username = $5), proj_id_latest AS (SELECT MAX(p_key) AS proj_id FROM proj_tbl) INSERT INTO role_tbl (user_id, role_proj, proj_id) SELECT p.proj_id, \'superuser\', u.user_id FROM user_id_select u, proj_id_latest p; WITH user_id_select AS (SELECT p_key AS user_id FROM user_tbl WHERE username = $5) UPDATE auth_key_tbl SET validity = false WHERE user_id = (SELECT user_id FROM user_id_select) AND auth_key = $6; SELECT MAX(p_key) AS proj_id FROM proj_tbl LIMIT 1;', [req.body.proj_name, req.body.organisation, req.body.funder, req.body.description, req.body.username, req.body.authkey])
     .then(function (data) {
-        res.status(201).send("PROJECT CREATION SUCCEEDED")
+        res.status(200).send(data);
     })
     .catch(function (error) {
         res.status(400).send("PROJECT CREATION FAILED")
