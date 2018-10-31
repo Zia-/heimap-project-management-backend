@@ -7,7 +7,7 @@ var db = pgp('postgres://heimapadmin:heimap@127.0.0.1:5432/heimap_proj_man') // 
 
 
 var corsOptions = {
-    origin: 'http://example.com',
+    origin: 'http://localhost:4201',
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
 }
 app.use(cors(corsOptions))
