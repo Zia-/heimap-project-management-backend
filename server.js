@@ -128,13 +128,23 @@ app.route('/post/user').post((req, res) => {
 });
 
 app.route('/post/role').post((req, res) => {
-    db.none('WITH user_id_select AS (SELECT p_key AS user_id FROM user_tbl WHERE username = $1) INSERT INTO role_tbl (user_id, role_proj, proj_id) SELECT user_id, $2, $3 FROM user_id_select;', [req.body.username, req.body.role_proj, req.body.proj_id])
-    .then(function (data) {
-        res.status(201).send("ROLE CREATION SUCCEEDED")
-    })
-    .catch(function (error) {
-        res.status(400).send("ROLE CREATION FAILED")
-    })
+    if (req.body.role_proj == "Revoke!"){
+        db.none('DELETE FROM role_tbl WHERE user_id = (SELECT p_key AS user_id FROM user_tbl WHERE username = $1) AND proj_id = $2;', [req.body.username, req.body.proj_id])
+        .then(function (data) {
+            res.status(201).send("ROLE DELETION SUCCEEDED")
+        })
+        .catch(function (error) {
+            res.status(400).send("ROLE DELETION FAILED")
+        })
+    } else {
+        db.none('WITH user_id_select AS (SELECT p_key AS user_id FROM user_tbl WHERE username = $1) INSERT INTO role_tbl (user_id, role_proj, proj_id) SELECT user_id, $2, $3 FROM user_id_select;', [req.body.username, req.body.role_proj, req.body.proj_id])
+        .then(function (data) {
+            res.status(201).send("ROLE CREATION SUCCEEDED")
+        })
+        .catch(function (error) {
+            res.status(400).send("ROLE CREATION FAILED")
+        })
+    }
 });
 
 app.route('/post/authkey').post((req, res) => {
