@@ -92,7 +92,7 @@ app.route('/get/pass/recover').get((req, res) => {
 app.route('/get/proj/role').get((req, res) => {
     const username = req.query.username;
 
-    db.any('WITH user_id_select AS (SELECT p_key AS user_id FROM user_tbl WHERE username = $1), all_projs AS (SELECT r.proj_id FROM role_tbl r, user_id_select u WHERE r.user_id = u.user_id), all_users AS (SELECT r.user_id, r.role_proj, r.proj_id FROM role_tbl r, all_projs a WHERE r.proj_id = a.proj_id) SELECT a.proj_id, p.proj_name, u.first_name, u.last_name, u.username, a.role_proj FROM all_users a JOIN user_tbl u ON a.user_id = u.p_key JOIN proj_tbl p ON a.proj_id = p.p_key;', [username])
+    db.any('WITH user_id_select AS (SELECT p_key AS user_id FROM user_tbl WHERE username = $1), all_projs AS (SELECT r.proj_id FROM role_tbl r, user_id_select u WHERE r.user_id = u.user_id), all_users AS (SELECT r.user_id, r.role_proj, r.proj_id FROM role_tbl r, all_projs a WHERE r.proj_id = a.proj_id) SELECT a.proj_id, p.proj_name, u.first_name, u.last_name, u.username, a.role_proj, u.p_key as user_id FROM all_users a JOIN user_tbl u ON a.user_id = u.p_key JOIN proj_tbl p ON a.proj_id = p.p_key;', [username])
     .then(function (data) {
         res.status(200).send(data);
     })
