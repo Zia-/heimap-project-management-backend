@@ -31,6 +31,7 @@ Response - [
                     "first_name": "dirk",
                     "last_name": "eller",
                     "username": "dr",
+                    "user_id": "23",
                     "role_proj": "editor"
                 },
                 {
@@ -39,6 +40,7 @@ Response - [
                     "first_name": "chris",
                     "last_name": "kempf",
                     "username": "chr",
+                    "user_id": "24",
                     "role_proj": "superuser"
                 },
                 {
@@ -47,6 +49,7 @@ Response - [
                     "first_name": "mo",
                     "last_name": "zia",
                     "username": "zz",
+                    "user_id": "25",
                     "role_proj": "superuser"
                 },
                 {
@@ -55,6 +58,7 @@ Response - [
                     "first_name": "rizwan",
                     "last_name": "mohammed",
                     "username": "riz",
+                    "user_id": "26",
                     "role_proj": "user"
                 },
                 {
@@ -63,6 +67,7 @@ Response - [
                     "first_name": "mo",
                     "last_name": "zia",
                     "username": "zz",
+                    "user_id": "27",
                     "role_proj": "editor"
                 },
                 {
@@ -71,6 +76,7 @@ Response - [
                     "first_name": "john",
                     "last_name": "clark",
                     "username": "jj",
+                    "user_id": "28",
                     "role_proj": "editor"
                 }
             ]
